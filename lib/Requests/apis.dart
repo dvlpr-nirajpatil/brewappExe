@@ -5,6 +5,7 @@ import 'package:brewapps/Model/top_rated_movies_response_model.dart';
 import 'package:http/http.dart' as http;
 
 class MovieApis {
+  // request to get Now Playing movies
   static Future<dynamic> getNowPlayingMoviesRequest() async {
     String nowPlayingApiUrl =
         "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
@@ -23,6 +24,7 @@ class MovieApis {
     }
   }
 
+  // request to get Top Rated Movies
   static Future<dynamic> getTopRatedRequest() async {
     String topRatedMoviesApiUrl =
         "https://api.themoviedb.org/3/movie/top_rated?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";

@@ -101,11 +101,13 @@ topRatedMoviesScreen(HomeScreenController controller) {
 searchResultScreen(HomeScreenController controller) {
   return Obx(
     () => Container(
-      child: controller.filteredMovies == null
+      child: controller.filteredMovies ==
+              null // if filterdmovies array is empty then show message
           ? Center(
               child: Text("No Movies Available"),
             )
           : ListView.separated(
+              //  showing movies which we have filterd
               itemCount: controller.filteredMovies.length,
               itemBuilder: (context, index) {
                 return ListTile(
