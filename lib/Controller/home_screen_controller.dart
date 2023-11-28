@@ -28,13 +28,18 @@ class HomeScreenController extends GetxController {
     fetchMoviesData();
   }
 
-  // function which filters movie starts from given string
-  filterMovies(List<Results> list_of_movies, String movieName) async {
-    filteredMovies(list_of_movies
-        .where((movie) => movie.originalTitle!
-            .toLowerCase()
-            .startsWith(movieName.toLowerCase()))
-        .toList());
+  filterMovies(List<Results> list, String searchTerm) {
+    // Convert the search term and each movie name to lowercase for case-insensitive comparison
+    String searchTermLower = searchTerm.toLowerCase();
+
+    // Use the where method to filter the list and get all matching movies
+    filteredMovies(list.where((movie) {
+      // Convert the current movie name to lowercase for case-insensitive comparison
+      String movieLower = movie.originalTitle!.toLowerCase();
+
+      // Check if the movie name contains the search term
+      return movieLower.contains(searchTermLower);
+    }).toList());
     showSearchScreen(true);
   }
 
