@@ -28,6 +28,16 @@ class HomeScreenController extends GetxController {
     fetchMoviesData();
   }
 
+  deleteMovie(int index) {
+    if (selectedScreenIndex == 0) {
+      nowPlayingMovies.value!.results!.removeAt(index);
+      final updated_movies = nowPlayingMovies.value;
+      nowPlayingMovies(updated_movies);
+    } else {
+      topRatedMovies.value!.results!.removeAt(index);
+    }
+  }
+
   filterMovies(List<Results> list, String searchTerm) {
     // Convert the search term and each movie name to lowercase for case-insensitive comparison
     String searchTermLower = searchTerm.toLowerCase();
@@ -40,6 +50,7 @@ class HomeScreenController extends GetxController {
       // Check if the movie name contains the search term
       return movieLower.contains(searchTermLower);
     }).toList());
+
     showSearchScreen(true);
   }
 

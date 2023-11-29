@@ -22,6 +22,12 @@ NowPlayingMoviesScreen(HomeScreenController controller) {
               itemCount: controller.nowPlayingMovies.value!.results!.length,
               itemBuilder: (context, index) {
                 return ListTile(
+                  trailing: GestureDetector(
+                    child: Icon(Icons.delete),
+                    onTap: () {
+                      controller.deleteMovie(index);
+                    },
+                  ),
                   onTap: () {
                     Get.to(
                       () => MovieDetailScreen(
