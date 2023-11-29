@@ -13,10 +13,8 @@ class HomeScreenController extends GetxController {
   var showSearchScreen = false.obs;
 
   // models thats stores the data which we get from api
-  Rx<NowPlayingMoviesReponseModel?> nowPlayingMovies =
-      NowPlayingMoviesReponseModel().obs;
-  Rx<TopRatedMoviesResponseModel?> topRatedMovies =
-      TopRatedMoviesResponseModel().obs;
+  RxList<Results>? nowPlayingMovies = [Results()].obs;
+  RxList<Results>? topRatedMovies = [Results()].obs;
 
   // stores the movies which we have searched
   var filteredMovies = [].obs;
@@ -30,15 +28,13 @@ class HomeScreenController extends GetxController {
 
   deleteMovie(int index) {
     if (selectedScreenIndex == 0) {
-      nowPlayingMovies.value!.results!.removeAt(index);
-      final updated_movies = nowPlayingMovies.value;
-      nowPlayingMovies(updated_movies);
+      nowPlayingMovies!.removeAt(index);
     } else {
-      topRatedMovies.value!.results!.removeAt(index);
+      topRatedMovies!.removeAt(index);
     }
   }
 
-  filterMovies(List<Results> list, String searchTerm) {
+  filterMovies(RxList<Results> list, String searchTerm) {
     // Convert the search term and each movie name to lowercase for case-insensitive comparison
     String searchTermLower = searchTerm.toLowerCase();
 
@@ -56,7 +52,15 @@ class HomeScreenController extends GetxController {
 
   // fetch the data
   Future<void> fetchMoviesData() async {
-    nowPlayingMovies(await MovieApis.getNowPlayingMoviesRequest());
-    topRatedMovies(await MovieApis.getTopRatedRequest());
+    final NowPlayingMoviesReponseModel now_playing_movies_result =
+        await MovieApis.getNowPlayingMoviesRequest();
+    final TopRatedMoviesResponseModel top_rated_movies_result =
+        await MovieApis.getTopRatedRequest();
+
+    List<Results> now_playing_movies = now_playing_movies_result.results!;
+    List<Results> top_rated_movies = top_rated_movies_result.results!;
+
+    nowPlayingMovies!.value = now_playing_movies;
+    topRatedMovies!.value = top_rated_movies;
   }
 }
