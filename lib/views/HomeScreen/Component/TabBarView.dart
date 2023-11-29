@@ -68,37 +68,43 @@ topRatedMoviesScreen(HomeScreenController controller) {
           ? Center(
               child: Text("No Movies Available"),
             )
-          : ListView.separated(
-              itemCount: controller.topRatedMovies.value!.results!.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: () {
-                    Get.to(
-                      () => MovieDetailScreen(
-                        MovieInfo:
-                            controller.topRatedMovies.value!.results![index] ??
-                                null,
-                      ),
-                    );
-                  },
-                  leading: Image.network(
-                    ('https://image.tmdb.org/t/p/original/${controller.topRatedMovies.value!.results![index].backdropPath}'),
-                    fit: BoxFit.fill,
-                  ),
-                  title: Text(
-                    controller
-                        .topRatedMovies!.value!.results![index].originalTitle!,
-                    maxLines: 1,
-                  ),
-                  subtitle: Text(
-                    controller.topRatedMovies!.value!.results![index].overview!,
-                    maxLines: 3,
-                  ),
-                );
+          : RefreshIndicator(
+              onRefresh: () async {
+                controller.fetchMoviesData();
               },
-              separatorBuilder: (context, index) {
-                return Divider();
-              },
+              child: ListView.separated(
+                itemCount: controller.topRatedMovies.value!.results!.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    onTap: () {
+                      Get.to(
+                        () => MovieDetailScreen(
+                          MovieInfo: controller
+                                  .topRatedMovies.value!.results![index] ??
+                              null,
+                        ),
+                      );
+                    },
+                    leading: Image.network(
+                      ('https://image.tmdb.org/t/p/original/${controller.topRatedMovies.value!.results![index].backdropPath}'),
+                      fit: BoxFit.fill,
+                    ),
+                    title: Text(
+                      controller.topRatedMovies!.value!.results![index]
+                          .originalTitle!,
+                      maxLines: 1,
+                    ),
+                    subtitle: Text(
+                      controller
+                          .topRatedMovies!.value!.results![index].overview!,
+                      maxLines: 3,
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+              ),
             ),
     ),
   );
