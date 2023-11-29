@@ -44,15 +44,18 @@ class Home extends StatelessWidget {
                     ? GestureDetector(
                         onTap: () {
                           controller.showSearchScreen(false);
+                          searchFieldController.text = "";
                         },
                         child: const Icon(Icons.close))
                     : GestureDetector(
                         onTap: () {
-                          controller.filterMovies(
-                              controller.selectedScreenIndex == 0
-                                  ? controller.nowPlayingMovies!
-                                  : controller.topRatedMovies!,
-                              searchFieldController.text);
+                          if (searchFieldController.text != "") {
+                            controller.filterMovies(
+                                controller.selectedScreenIndex == 0
+                                    ? controller.nowPlayingMovies!
+                                    : controller.topRatedMovies!,
+                                searchFieldController.text);
+                          }
                         },
                         child: const Icon(Icons.search))
               ],
