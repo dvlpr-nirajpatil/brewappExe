@@ -30,8 +30,8 @@ class Home extends StatelessWidget {
                       controller.filterMovies(
                           controller.selectedScreenIndex.value ==
                                   0 // if now playing screen is selected then pass nowplaying movies list for search else pass the list of top rated movie
-                              ? controller.nowPlayingMovies.value!.results!
-                              : controller.topRatedMovies.value!.results!,
+                              ? controller.nowPlayingMovies!
+                              : controller.topRatedMovies!,
                           searchFieldController.text);
                     },
                     controller: searchFieldController,
@@ -50,8 +50,8 @@ class Home extends StatelessWidget {
                         onTap: () {
                           controller.filterMovies(
                               controller.selectedScreenIndex == 0
-                                  ? controller.nowPlayingMovies.value!.results!
-                                  : controller.topRatedMovies.value!.results!,
+                                  ? controller.nowPlayingMovies!
+                                  : controller.topRatedMovies!,
                               searchFieldController.text);
                         },
                         child: const Icon(Icons.search))
@@ -64,11 +64,15 @@ class Home extends StatelessWidget {
             Obx(
               // like consumer
               () => Expanded(
+                  child: RefreshIndicator(
+                onRefresh: () async {
+                  controller.fetchMoviesData();
+                },
                 child: controller.showSearchScreen
                         .value // if show search screen is true the  show search screen else show tab view
                     ? searchResultScreen(controller)
                     : tabBarView(controller),
-              ),
+              )),
             ),
             tabbar(controller) // tab bar
           ],
